@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <!-- Link para o CSS do Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+            margin-bottom: 10px;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .message.user {
+            background: #d1e7dd;
+            align-self: flex-end;
+        }
+        .message.assistant {
+            background: #f8d7da;
+            align-self: flex-start;
+        }
+        .footer {
+            display: flex;
+        }
+        .footer input {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container chat-container">
+        <h1 class="text-center">Chatbot</h1>
+        <div class="conversation">
+            <!-- Loop para exibir cada mensagem na conversa -->
+            {% for msg in conversation %}
+                <div class="message {{ msg.role }}">
+                    <strong>{{ "Tu" if msg.role == "user" else "Chatbot" }}:</strong> {{ msg.content }}
+                </div>
+            {% endfor %}
+        </div>
+        <!-- Formulário para enviar mensagens e limpar a conversa -->
+        <form method="POST" class="footer">
+            <input type="text" id="user_input" name="user_input" class="form-control">
+            <button type="submit" name="action" value="send" class="btn btn-primary ml-2">Enviar</button>
+            <button type="submit" name="action" value="clear" class="btn btn-danger ml-2">Limpar</button>
+        </form>
+    </div>
+    <!-- Scripts do jQuery e Bootstrap -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
