@@ -11,6 +11,17 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
+            background: url('https://blog.bismart.com/hs-fs/hubfs/Imported_Blog_Media/los-10-mejores-bots-disponibles-en-Internet-Sep-26-2023-08-53-22-8616-AM.jpg?width=5184&name=los-10-mejores-bots-disponibles-en-Internet-Sep-26-2023-08-53-22-8616-AM.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .overlay {
+            background: rgba(255, 255, 255, 0.7); /* Cor de fundo branca com 70% de opacidade */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
         }
         .chat-container {
             flex: 1;
@@ -18,7 +29,7 @@
             padding: 20px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            background: #f9f9f9;
+            background: rgba(249, 249, 249, 0.85); /* Cor de fundo branca com 85% de opacidade */
             margin-bottom: 10px;
         }
         .message {
@@ -29,10 +40,13 @@
         .message.user {
             background: #d1e7dd;
             align-self: flex-end;
+            border-radius: 10pt 10pt 0 10pt;
         }
         .message.assistant {
             background: #f8d7da;
+            text-shadow: 1pt 1pt 1pt #f8d7da;
             align-self: flex-start;
+            border-radius: 10pt 10pt 0 10pt;
         }
         .footer {
             display: flex;
@@ -40,28 +54,69 @@
         .footer input {
             flex: 1;
         }
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .loading-spinner {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
+    <div class="overlay"></div>
     <div class="container chat-container">
         <h1 class="text-center">Chatbot</h1>
         <div class="conversation">
             <!-- Loop para exibir cada mensagem na conversa -->
             {% for msg in conversation %}
                 <div class="message {{ msg.role }}">
-                    <strong>{{ "Tu" if msg.role == "user" else "Chatbot" }}:</strong> {{ msg.content }}
+                    <strong>{{ "Você" if msg.role == "user" else "Chatbot" }}:</strong> {{ msg.content }}
                 </div>
             {% endfor %}
         </div>
         <!-- Formulário para enviar mensagens e limpar a conversa -->
         <form method="POST" class="footer">
             <input type="text" id="user_input" name="user_input" class="form-control">
-            <button type="submit" name="action" value="send" class="btn btn-primary ml-2">Enviar</button>
-            <button type="submit" name="action" value="clear" class="btn btn-danger ml-2">Limpar</button>
-        </form>
+            <button type="submit" name="action" value="send" class="btn btn-success ml-2">Enviar</button>
+            <button type="submit" name="action" value="clear" class="btn btn-warning ml-2">Limpar</button>
+        </form> 
+        <!-- Overlay de carregamento -->
+        <div id="loading-overlay" style="display: none;">
+            <div class="loading-spinner">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- Scripts do jQuery e Bootstrap -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('form').on('submit', function() {
+                // Mostrar o overlay de carregamento
+                $('#loading-overlay').show();
+            });
+
+            $('#user_input').on('keypress', function(e) {
+                if (e.which == 13) {
+                    // Prevenir o comportamento padrão de submissão
+                    e.defaultPrevented();
+                    // Submeter o formulário manualmente
+                    $('form').submit();
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -6,12 +6,12 @@ import openai
 app = Flask(__name__)
 
 # Define a chave da API da OpenAI (substitua 'A_SUA_CHAVE_DA_API' pela sua chave real)
-api_key = 'API-KEY'
-# Inicializa o cliente da OpenAI com a chave da API
+api_key = ""
+# Inicializa o cliente da OpenAI com a chave da API 
 client = openai.OpenAI(api_key=api_key)
 
 # Inicializa a conversa com uma mensagem de sistema
-conversation = [{"role": "system", "content": "You are a helpful assistant."}]
+conversation = [{"role": "system", "content": "Sou seu Assitente Virtual. Como posso ajudar?"}]
 
 # Define a função do chatbot
 def chatbot(prompt):
@@ -47,7 +47,7 @@ def home():
             chatbot(user_input)
         elif action == "clear":
             # Limpa a conversa reiniciando-a
-            conversation = [{"role": "system", "content": "You are a helpful assistant."}]
+            conversation = [{"role": "system", "content": "Sou seu Assitente Virtual. Como posso ajudar?"}]
         return redirect(url_for('home'))
     return render_template("index.html", conversation=conversation)
 
